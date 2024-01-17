@@ -2,7 +2,7 @@ import "dart:ui";
 import "package:flutter/material.dart";
 import "package:pixelconquest/views/selection_view.dart";
 import "package:pixelconquest/widgets/about.dart";
-import "package:pixelconquest/widgets/custom_button.dart";
+import 'package:pixelconquest/widgets/button.dart';
 import "package:pixelconquest/widgets/ranking.dart";
 
 class HomeView extends StatelessWidget {
@@ -46,17 +46,16 @@ class HomeView extends StatelessWidget {
                     children: [
                       const Text("Pixel Conquest",
                           style: TextStyle(
-                            fontSize: 72,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          )),
+                              fontSize: 72,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
                       const SizedBox(height: 100),
-                      CustomButton(
+                      Button(
                         text: "Jouer",
                         textSize: 45,
                         backgroundColor: const Color(0xFF187500),
                         opacity: 0.75,
-                        width: MediaQuery.of(context).size.width * 0.7,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.15,
                         onPressed: () {
                           Navigator.push(
@@ -67,21 +66,20 @@ class HomeView extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 50),
-                      CustomButton(
-                        text: "Classement",
-                        textSize: 45,
-                        backgroundColor: Colors.black,
-                        opacity: 0.75,
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        onPressed: () {
-                          _showRanking(context);
-                        }
-                      ),
+                      Button(
+                          text: "Classement",
+                          textSize: 45,
+                          backgroundColor: Colors.black,
+                          opacity: 0.75,
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          onPressed: () {
+                            _showRanking(context);
+                          }),
                       const SizedBox(height: 50),
                       Align(
                         alignment: Alignment.bottomRight,
-                        child: CustomButton(
+                        child: Button(
                           text: "?",
                           textSize: 75,
                           backgroundColor: Colors.black,
