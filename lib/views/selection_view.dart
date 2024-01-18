@@ -1,11 +1,37 @@
-import "dart:ui";
-import "package:flutter/material.dart";
-import "package:pixelconquest/utils/random_color.dart";
-import "package:pixelconquest/widgets/button.dart";
-import "package:pixelconquest/widgets/text_input.dart";
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:pixelconquest/utils/random_color.dart';
+import 'package:pixelconquest/widgets/button.dart';
+import 'package:pixelconquest/widgets/color_select.dart';
+import 'package:pixelconquest/widgets/text_input.dart';
 
-class SelectionView extends StatelessWidget {
-  const SelectionView({super.key});
+class SelectionView extends StatefulWidget {
+  const SelectionView({Key? key}) : super(key: key);
+
+  @override
+  State<SelectionView> createState() => _SelectionViewState();
+}
+
+class _SelectionViewState extends State<SelectionView> {
+  late List<Color> buttonColors;
+  late List<TextEditingController> textControllers;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialisation des listes
+    buttonColors = List.generate(4, (index) => generateRandomColor());
+    textControllers = List.generate(
+        4, (index) => TextEditingController()); // pour les contrôleurs de texte
+  }
+
+  List<double> extractRGBComponents(Color color) {
+    return [
+      color.red.toDouble(),
+      color.green.toDouble(),
+      color.blue.toDouble(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,32 +81,45 @@ class SelectionView extends StatelessWidget {
                           // Champ de saisie pour le nom du joueur
                           Expanded(
                             child: TextInput(
-                              controller: TextEditingController(),
+                              controller: textControllers[i],
                               hintText: "Joueur ${i + 1}",
+                              verticalPadding: 50.0,
                             ),
                           ),
                           const SizedBox(width: 20),
-                          // Carré de couleur aléatoire
-                          Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: generateRandomColor(),
-                              border: Border.all(color: Colors.white),
-                            ),
+                          // Bouton de couleur cliquable qui fait apparaître le widget ColorSelect
+                          Button(
+                            text: "",
+                            textSize: 0,
+                            backgroundColor: buttonColors[i],
+                            width: 70,
+                            height: 70,
+                            onPressed: () {
+                              final colorComponents =
+                                  extractRGBComponents(buttonColors[i]);
+                              showDialog(
+                                context: context,
+                                builder: (context) => ColorSelect(
+                                  text: "Joueur ${i + 1}",
+                                  initialRed: colorComponents[0],
+                                  initialGreen: colorComponents[1],
+                                  initialBlue: colorComponents[2],
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
                     ),
                   const SizedBox(height: 50),
-                  // Bouton "C"est parti !"
+                  // Bouton "C'est parti !"
                   Button(
                     text: "C'est parti !",
                     textSize: 30,
                     backgroundColor: Colors.black,
                     opacity: 0.75,
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    height: 70,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: 80,
                     onPressed: () {
                       // Ajoutez ici la logique pour gérer le clic sur le bouton
                     },
