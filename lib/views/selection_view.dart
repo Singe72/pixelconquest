@@ -15,6 +15,7 @@ class SelectionView extends StatefulWidget {
 class _SelectionViewState extends State<SelectionView> {
   late List<Color> buttonColors;
   late List<TextEditingController> textControllers;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -23,6 +24,15 @@ class _SelectionViewState extends State<SelectionView> {
     buttonColors = List.generate(4, (index) => generateRandomColor());
     textControllers = List.generate(
         4, (index) => TextEditingController()); // pour les contrôleurs de texte
+  }
+
+  @override
+  void dispose() {
+    // Libération des ressources des contrôleurs de texte
+    for (var controller in textControllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   List<double> extractRGBComponents(Color color) {
@@ -80,60 +90,9 @@ class _SelectionViewState extends State<SelectionView> {
                           ),
                         ),
                         const SizedBox(height: 50),
-                        // 4 lignes avec champs de saisie et carré de couleur
-                        for (int i = 0; i < 4; i++)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // Champ de saisie pour le nom du joueur
-                                TextInput(
-                                  controller: textControllers[i],
-                                  hintText: "Joueur ${i + 1}",
-                                  verticalPadding: 10.0,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5 -
-                                          74 -
-                                          20,
-                                ),
-                                const SizedBox(width: 20),
-                                // Bouton de couleur cliquable qui fait apparaître le widget ColorSelect
-                                Button(
-                                  text: "",
-                                  textSize: 0,
-                                  backgroundColor: buttonColors[i],
-                                  width: 74,
-                                  height: 74,
-                                  onPressed: () {
-                                    final colorComponents =
-                                        extractRGBComponents(buttonColors[i]);
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => ColorSelect(
-                                        text: "Joueur ${i + 1}",
-                                        initialRed: colorComponents[0],
-                                        initialGreen: colorComponents[1],
-                                        initialBlue: colorComponents[2],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        const SizedBox(height: 50),
-                        // Bouton "C'est parti !"
-                        Button(
-                          text: "C'est parti !",
-                          textSize: 36,
-                          backgroundColor: Colors.black,
-                          opacity: 0.75,
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          height: 120,
-                          onPressed: () {
-                            // Ajoutez ici la logique pour gérer le clic sur le bouton
-                          },
+                        Form(
+                          key: _formKey,
+                          child: Column(children: _buildFormFields()),
                         ),
                       ]),
                     )
@@ -145,5 +104,78 @@ class _SelectionViewState extends State<SelectionView> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildFormFields() {
+    List<Widget> formFields = [];
+
+    for (int i = 0; i < 4; i++) {
+      formFields.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Champ de saisie pour le nom du joueur
+            TextInput(
+              controller: textControllers[i],
+              hintText: "Joueur ${i + 1}",
+              verticalPadding: 10.0,
+              width: MediaQuery.of(context).size.width * 0.5 - 74 - 20,
+              validator: (value) {
+                int valueLength = value.length;
+                if (valueLength < 3 || valueLength > 20) {
+                  return "";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(width: 20),
+            // Bouton de couleur cliquable qui fait apparaître le widget ColorSelect
+            Button(
+              text: "",
+              textSize: 0,
+              backgroundColor: buttonColors[i],
+              width: 74,
+              height: 74,
+              onPressed: () {
+                final colorComponents = extractRGBComponents(buttonColors[i]);
+                showDialog(
+                  context: context,
+                  builder: (context) => ColorSelect(
+                    text: "Joueur ${i + 1}",
+                    initialRed: colorComponents[0],
+                    initialGreen: colorComponents[1],
+                    initialBlue: colorComponents[2],
+                    onColorChanged: (selectedColor) {
+                      setState(() {
+                        buttonColors[i] = selectedColor;
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ));
+    }
+
+    formFields.add(const SizedBox(height: 50));
+
+    formFields.add(Button(
+      text: "C'est parti !",
+      textSize: 36,
+      backgroundColor: Colors.black,
+      opacity: 0.75,
+      width: MediaQuery.of(context).size.width * 0.5,
+      height: 120,
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          // print les noms et les couleurs des joueurs
+        }
+      },
+    ));
+
+    return formFields;
   }
 }

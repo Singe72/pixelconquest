@@ -6,14 +6,17 @@ class TextInput extends StatelessWidget {
   final double verticalPadding;
   final double horizontalPadding;
   final double width;
+  final Function(String)? validator;
 
-  const TextInput(
-      {super.key,
-      required this.controller,
-      required this.hintText,
-      this.verticalPadding = 0,
-      this.horizontalPadding = 0,
-      this.width = 0});
+  const TextInput({
+    Key? key,
+    required this.controller,
+    required this.hintText,
+    this.verticalPadding = 0,
+    this.horizontalPadding = 0,
+    this.width = 0,
+    this.validator,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +27,28 @@ class TextInput extends StatelessWidget {
         border: Border.all(color: Colors.white, width: 3),
       ),
       padding: EdgeInsets.symmetric(
-          vertical: verticalPadding, horizontal: horizontalPadding),
-      child: TextField(
+        vertical: verticalPadding,
+        horizontal: horizontalPadding,
+      ),
+      child: TextFormField(
         controller: controller,
         textAlign: TextAlign.center,
         cursorColor: Colors.white,
         style: const TextStyle(
-            color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+          color: Colors.white,
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+        ),
         decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: const TextStyle(color: Colors.grey),
-            border: InputBorder.none),
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Colors.grey),
+          border: InputBorder.none,
+          errorStyle: const TextStyle(height: 0, color: Colors.white),
+        ),
+        onChanged: (value) {
+          // Ajouter un code ici si nécessaire lorsqu'une modification est détectée
+        },
+        validator: (value) => validator!(value!),
       ),
     );
   }
