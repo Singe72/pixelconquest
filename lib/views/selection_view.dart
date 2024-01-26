@@ -23,7 +23,9 @@ class _SelectionViewState extends State<SelectionView> {
     // Initialisation des listes
     buttonColors = List.generate(4, (index) => generateRandomColor());
     textControllers = List.generate(
-        4, (index) => TextEditingController()); // pour les contrôleurs de texte
+        4,
+        (index) => TextEditingController(
+            text: "Joueur ${index + 1}")); // pour les contrôleurs de texte
   }
 
   @override
@@ -120,7 +122,7 @@ class _SelectionViewState extends State<SelectionView> {
               controller: textControllers[i],
               hintText: "Joueur ${i + 1}",
               verticalPadding: 10.0,
-              width: MediaQuery.of(context).size.width * 0.5 - 74 - 20,
+              width: MediaQuery.of(context).size.width * 0.5 - 80 - 20,
               validator: (value) {
                 int valueLength = value.length;
                 if (valueLength < 3 || valueLength > 20) {
@@ -135,8 +137,8 @@ class _SelectionViewState extends State<SelectionView> {
               text: "",
               textSize: 0,
               backgroundColor: buttonColors[i],
-              width: 74,
-              height: 74,
+              width: 80,
+              height: 80,
               onPressed: () {
                 final colorComponents = extractRGBComponents(buttonColors[i]);
                 showDialog(
@@ -172,6 +174,9 @@ class _SelectionViewState extends State<SelectionView> {
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           // print les noms et les couleurs des joueurs
+          for (int i = 0; i < 4; i++) {
+            print("${textControllers[i].text} : ${buttonColors[i]}");
+          }
         }
       },
     ));
