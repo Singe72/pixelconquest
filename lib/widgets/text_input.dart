@@ -43,6 +43,7 @@ class TextInput extends StatelessWidget {
           hintText: hintText,
           hintStyle: const TextStyle(color: Colors.grey),
           border: InputBorder.none,
+          contentPadding: const EdgeInsets.all(8.0),
           errorStyle: const TextStyle(height: 0, color: Colors.white),
         ),
         onChanged: (value) {
