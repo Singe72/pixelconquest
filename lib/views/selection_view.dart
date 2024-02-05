@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:pixelconquest/utils/random_color.dart';
+import 'package:pixelconquest/views/game_view.dart';
 import 'package:pixelconquest/widgets/button.dart';
 import 'package:pixelconquest/widgets/color_select.dart';
 import 'package:pixelconquest/widgets/text_input.dart';
@@ -126,7 +127,7 @@ class _SelectionViewState extends State<SelectionView> {
               validator: (value) {
                 int valueLength = value.length;
                 if (valueLength < 3 || valueLength > 20) {
-                  return "";
+                  return "Le nom doit contenir entre 3 et 20 caractères";
                 }
                 return null;
               },
@@ -173,10 +174,20 @@ class _SelectionViewState extends State<SelectionView> {
       height: 120,
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          // print les noms et les couleurs des joueurs
+          List playersData = [];
+
           for (int i = 0; i < 4; i++) {
-            print("${textControllers[i].text} : ${buttonColors[i]}");
+            playersData.add(
+                {"name": textControllers[i].text, "color": buttonColors[i]});
           }
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GameView(
+                      gameData: playersData,
+                    )),
+          );
         }
       },
     ));
