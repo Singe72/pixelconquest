@@ -1,9 +1,22 @@
 import "package:flame/game.dart";
 import "package:flutter/material.dart";
 import "package:pixelconquest/main.dart";
-import "package:pixelconquest/overlays/scoreboard.dart";
-import "package:pixelconquest/pixelconquest_game.dart";
+import 'package:pixelconquest/game/overlays/scoreboard.dart';
+import 'package:pixelconquest/game/pixelconquest_game.dart';
 import "package:supabase_flutter/supabase_flutter.dart";
+import 'package:logger/logger.dart';
+
+var logger = Logger(
+    filter: null,
+    printer: PrettyPrinter(
+      methodCount: 0,
+      errorMethodCount: 5,
+      lineLength: 50,
+      colors: true,
+      printEmojis: true,
+      printTime: false,
+    ),
+    output: null);
 
 class GameView extends StatefulWidget {
   final List gameData;
@@ -23,9 +36,9 @@ class _GameViewState extends State<GameView> {
         });
       } catch (error) {
         if (error is PostgrestException && error.code == "23505") {
-          print("Player ${data["name"]} already exists, skipping...");
+          logger.i("Player ${data["name"]} already exists, skipping...");
         } else {
-          print(error);
+          logger.e(error);
         }
       }
     }

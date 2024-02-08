@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   flutter_native_splash: ^2.3.7
   flutter_riverpod: ^2.4.9
+  logger: ^2.0.2+1
   supabase_flutter: ^2.2.0
 
 dev_dependencies:
