@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pixelconquest/pixelconquest_game.dart';
+import 'package:pixelconquest/game/pixelconquest_game.dart';
 
 class Scoreboard extends StatelessWidget {
   final PixelConquestGame game;
