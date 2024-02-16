@@ -91,7 +91,6 @@ class HomeView extends StatelessWidget {
                           },
                         ),
                       ),
-                      // Autres boutons personnalisés ou widgets réutilisables
                     ],
                   ),
                 ),

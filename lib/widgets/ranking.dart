@@ -48,8 +48,7 @@ class _RankingState extends State<Ranking> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(
-                    16.0), // Ajustez le padding selon vos besoins
+                padding: const EdgeInsets.all(16.0),
                 child: Scaffold(
                   backgroundColor: Colors.transparent,
                   body: FutureBuilder<List<Map<String, dynamic>>>(
@@ -85,8 +84,7 @@ class _RankingState extends State<Ranking> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      width:
-                                          32.0, // Ajustez l'espacement entre la position et le nom
+                                      width: 32.0,
                                     ),
                                     Text(
                                       player["name"],

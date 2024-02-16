@@ -46,9 +46,7 @@ class TextInput extends StatelessWidget {
           contentPadding: const EdgeInsets.all(8.0),
           errorStyle: const TextStyle(height: 0, color: Colors.white),
         ),
-        onChanged: (value) {
-          // Ajouter un code ici si nécessaire lorsqu'une modification est détectée
-        },
+        onChanged: (value) {},
         validator: (value) => validator!(value!),
       ),
     );
